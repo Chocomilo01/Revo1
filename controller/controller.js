@@ -1,13 +1,23 @@
 const productService = require('../services/services');
+const upload = require('../middlewares/upload');
 
 const createProduct = async (req, res) => {
     try {
-        const product = await productService.createProduct(req.body);
+        let productData = req.body;
+
+        if (req.file) {
+            console.log("Cloudinary Upload Successful: ", req.file.path); // Debugging
+            productData.productImage = req.file.path; // Use Cloudinary image URL
+        }
+
+        const product = await productService.createProduct(productData);
         res.status(201).json({ success: true, data: product });
     } catch (error) {
+        console.error("Error creating product:", error);
         res.status(400).json({ success: false, message: error.message });
     }
 };
+
 
 const getAllProducts = async (req, res) => {
     try {

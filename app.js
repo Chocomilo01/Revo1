@@ -31,6 +31,8 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Product API');
 });
 
+app.use('/uploads', express.static('uploads'));
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
